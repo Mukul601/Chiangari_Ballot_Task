@@ -49,7 +49,7 @@ const Ballotpage = () => {
         </div>
         <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
         <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-right blue-glassmorphism">
-            <h1>Add Voters</h1>
+            <h1>Change Ownership</h1>
             <Input placeholder="Password" name="addressTo" type="text" handleChange={() => {}} />
             
             <button
