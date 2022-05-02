@@ -1,7 +1,7 @@
 
 const main = async () => {
   const BallotTask = await hre.ethers.getContractFactory("BallotTask");
-  const ballotTransactions = await BallotTask.deploy("Twitter Acquisition Good for Blockchain Ecosystem", "true or false");
+  const ballotTransactions = await BallotTask.deploy();
 
   await ballotTransactions.deployed();
 

@@ -2,6 +2,8 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
+//import '@openzeppelin/contracts/security/ReentrancyGuard.sol'
+
 contract BallotTask {
     event votingStage(string currentstage);
     event voterBaned(address voterB, string voterN);
@@ -17,15 +19,14 @@ contract BallotTask {
         bool weight;
         bool eligible;
     }
-    uint256 private countResult = 0;
-    uint256 public finalResult = 0;
+    uint256 private TrueCount = 0;
     uint256 public totalVoter = 0;
     uint256 public totalVote = 0;
     uint256 public totalBanAddress = 0;
-
+    
     address public ballotOwnerAddress;
     string public ballotName;
-    string public proposal;
+    string public finalResult = "not declared";
 
     mapping(uint256 => vote) private votes;
     mapping(address => voter) public voterRegister;
@@ -36,6 +37,15 @@ contract BallotTask {
         Ended
     }
     State public state;
+
+    bool internal locked;
+
+    modifier noReentrancy() {
+        require(!locked, "no reentrancy");
+        locked = true;
+        _;
+        locked = false;
+    }
 
     modifier condition(bool _condition) {
         require(_condition);
@@ -55,10 +65,8 @@ contract BallotTask {
         _;
     }
 
-    constructor(string memory _ballotName, string memory _proposal) {
+    constructor() {
         ballotOwnerAddress = msg.sender;
-        ballotName = _ballotName;
-        proposal = _proposal;
         state = State.Created;
     }
 
@@ -72,10 +80,13 @@ contract BallotTask {
 
     function addVoter(address _voterAddress, string memory _voterName)
         public
-        inState(State.Created)
         onlyOwner
+        noReentrancy
     {
-        //require(voterRegister[_voterAddress].weight = false);
+        require(
+            !voterRegister[_voterAddress].weight == true,
+            "The voter is already registered"
+        );
         voter memory v;
         v.voterName = _voterName;
         v.weight = true;
@@ -88,47 +99,65 @@ contract BallotTask {
     function banVoter(address _voterAddress, string memory _voterName)
         public
         onlyOwner
+        inState(State.Voting)
+        noReentrancy
     {
+        require(
+            !voterRegister[_voterAddress].weight == false,
+            "The voter is already baned"
+        );
         voter memory v;
         v.voterName = _voterName;
-        v.weight = false;
         v.eligible = false;
         voterRegister[_voterAddress] = v;
         totalBanAddress++;
-        totalVoter++;
         emit voterBaned(_voterAddress, _voterName);
     }
 
-    function startVote() public inState(State.Created) onlyOwner {
+    function startVote(string memory _ballotName)
+        public
+        inState(State.Created)
+        //onlyOwner
+    {
+        changeOwner("Chingari");
         state = State.Voting;
+        ballotName = _ballotName;
         emit votingStage("Voting Started");
     }
 
     function doVote(bool _choice)
         public
         inState(State.Voting)
-        returns (bool voted)
+        noReentrancy
+        returns (bool weight)
     {
-        bool found = false;
-        require(voterRegister[msg.sender].weight = true);
-
+        require(voterRegister[msg.sender].weight == true);
+        require(voterRegister[msg.sender].eligible == true);
+        bool found = true;
         voterRegister[msg.sender].weight = false;
+        voterRegister[msg.sender].eligible = false;
         vote memory v;
         v.voterAddress = msg.sender;
         v.choice = _choice;
         if (_choice) {
-            countResult++;
+            TrueCount++;
         }
         votes[totalVote] = v;
         totalVote++;
-        found = true;
+        found = false;
 
         return found;
     }
 
     function endVote() public inState(State.Voting) onlyOwner {
         state = State.Ended;
-        finalResult = countResult;
+        if (2*TrueCount > totalVote){
+            finalResult = "true";
+        }else if (2*TrueCount == totalVote){
+            finalResult = "draw";
+        }else{
+            finalResult = "false";
+        }
         emit votingStage("Voting Ended");
     }
 }
