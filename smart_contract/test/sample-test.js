@@ -1,10 +1,10 @@
-const { expect } = require("chai");
+/*const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
+describe("BallotTask", function () {
   it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
+    const BallotTask = await ethers.getContractFactory("BallotTask");
+    const  = await BallotTask.deploy("Hello, world!");
     await greeter.deployed();
 
     expect(await greeter.greet()).to.equal("Hello, world!");
@@ -17,3 +17,4 @@ describe("Greeter", function () {
     expect(await greeter.greet()).to.equal("Hola, mundo!");
   });
 });
+*/

@@ -105,7 +105,6 @@ export const BallotTaskProvider = ({ children }) => {
           if (!ethereum) return alert("Please install MetaMask.");
           const {voterAddress, voterName} = voterData;
           const ballottaskContract = getEthereumContract();
-
           const ballottaskHash = await ballottaskContract.addVoter(voterAddress, voterName);
           await ballottaskHash.wait();
         } catch (error) {
@@ -114,7 +113,6 @@ export const BallotTaskProvider = ({ children }) => {
           throw new Error("No ethereum object");
             
         }
-
       const transferOwnership = async () => {
         try {
             
@@ -122,20 +120,17 @@ export const BallotTaskProvider = ({ children }) => {
             const {password} = passwordData;
             const ballottaskContract = getEthereumContract();
             const ballottaskHash = await ballottaskContract.startVote(proposal);
-
             setIsLoading(true);
             console.log(`Loding - ${ballottaskHash.hash}`);
             await ballottaskHash.wait();
             setIsLoading(false);
             console.log(`Voted for ${proposal} - ${ballottaskHash.hash}`);
-
         } catch (error) {
           console.log(error);
   
           throw new Error("No ethereum object, sorry can't vote");
             
         }
-
      /* const startVoting = async () => {
         try {
           if (!ethereum) return alert("Please install MetaMask.");

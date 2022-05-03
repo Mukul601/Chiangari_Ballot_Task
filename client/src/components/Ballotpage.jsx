@@ -1,4 +1,3 @@
-
 import React, { useContext } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { BallotTaskContext } from '../context/BallotTaskContext';
@@ -41,13 +40,9 @@ const { connectWallet, currentAccount, proposalData, isLoading,  setProposalData
   } /*
   const addVoter = (e) => {
     const {voterAddress, voterName} = voterData;
-
     e.preventDefault();
-
     if(!voterAddress || !voterName) return;
-
     AddVoters();
-
   }*/
   const banVoter = () => {
 
@@ -74,22 +69,7 @@ const { connectWallet, currentAccount, proposalData, isLoading,  setProposalData
             </button>
           )}
           </div>
-          <div className="flex w-full justify-center items-center">
-        <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
-        <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-right blue-glassmorphism">
-            
-            <h1>Start a poll</h1>
-            <Input placeholder="Topic" name="proposal" type="text" handleChange={handleChange} />
-            <button
-                  type="button"
-                  onClick={handleSubmit}
-                  className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
-                >
-                  Start Voting
-                </button>
-        </div>
-        </div>
-        </div>
+         
         
            <h1 className="text-3xl sm:text-5xl text-black  py-1">
             Vote your opnion  <br /> 
@@ -119,6 +99,22 @@ const { connectWallet, currentAccount, proposalData, isLoading,  setProposalData
               <p className="text-black w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer">
                 Total votes for true
               </p>
+              <div className="flex w-full justify-center items-center">
+        <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
+        <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-right blue-glassmorphism">
+            
+            <h1>Start a poll</h1>
+            <Input placeholder="Topic" name="proposal" type="text" handleChange={handleChange} />
+            <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
+                >
+                  Start Voting
+                </button>
+        </div>
+        </div>
+        </div>
 
         </div>
         </div>
@@ -171,5 +167,3 @@ const { connectWallet, currentAccount, proposalData, isLoading,  setProposalData
 
 
 export default Ballotpage;
-
-
